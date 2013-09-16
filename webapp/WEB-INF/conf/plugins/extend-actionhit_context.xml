@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<!-- Services -->
+	<bean id="extend-actionhit.actionHitService" class="fr.paris.lutece.plugins.extend.modules.actionhit.service.ActionHitService" scope="singleton" />
+	<bean id="extend-actionhit.actionHitListener" class="fr.paris.lutece.plugins.extend.modules.actionhit.service.ActionHitListener" />
+	<bean id="extend-actionhit.actionHitExtendableResourceRemovalListener" class="fr.paris.lutece.plugins.extend.modules.actionhit.service.ActionHitExtendableResourceRemovalListener" />
+	
+	<!-- Resource extender -->
+	<bean id="extend-actionhit.actionHitResourceExtender" class="fr.paris.lutece.plugins.extend.modules.actionhit.service.extender.ActionHitResourceExtender" 
+		p:key="actionhit"
+		p:i18nTitleKey="module.extend.actionhit.extender.actionhit.label"
+		p:configRequired="false" 
+		p:historyEnable="false"
+		p:resourceExtenderComponent-ref="extend-actionhit.actionHitResourceExtenderComponent" />
+		
+	<bean id="extend-actionhit.actionHitResourceExtenderComponent" class="fr.paris.lutece.plugins.extend.modules.actionhit.web.component.ActionHitResourceExtenderComponent" 
+		p:resourceExtender-ref="extend-actionhit.actionHitResourceExtender" />
+	
+	<!-- DAO -->
+	<bean id="extend-actionhit.actionHitDAO" class="fr.paris.lutece.plugins.extend.modules.actionhit.business.ActionHitDAO" />
+	
+	<!-- Actions -->
+	<bean id="extend-actionhit.actionHitInstallerPluginAction" class="fr.paris.lutece.plugins.extend.modules.actionhit.web.action.ActionHitInstallerPluginAction" />
+	
+</beans>

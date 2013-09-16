@@ -1,0 +1,17 @@
+<#include "../../../actions/create_extender_from_resource.html">
+<a data-toggle="dropdown" href="#">
+	<i class="icon-tasks">&nbsp;</i>&nbsp;#i18n{module.extend.actionhit.extender.actionhit.label}
+</a>
+<ul class="dropdown-menu submenu-left">
+	<li>
+		<div class="form-inline">
+			<#assign installed = false>
+			<#assign unremovable = false>
+			<#if extenderTypesInstalled.actionhit??>
+				<#assign installed = true>
+				<#assign unremovable = extenderTypesInstalled.actionhit>
+			</#if>
+			<@createExtenderFromResource extenderType="actionhit" installed=installed unremovable=unremovable labelAdd="#i18n{module.extend.actionhit.create_extender_from_resource.labelAddExtender}" labelRemove="#i18n{module.extend.actionhit.create_extender_from_resource.labelRemoveExtender}" />
+		</div>
+	</li>
+</ul>
