@@ -49,7 +49,7 @@
 	<properties>
 		<componentName>extend-actionhit</componentName>
 		<jiraProjectName>EXTACTHIT</jiraProjectName>
-		<jiraComponentId>10855</jiraComponentId>
+		<jiraComponentId>12257</jiraComponentId>
 	</properties>
     
     <scm>
