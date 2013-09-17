@@ -15,7 +15,7 @@ public class ActionHitExtendableResourceRemovalListener implements IExtendableRe
 
     @Inject
     @Named( ActionHitService.BEAN_NAME )
-    ActionHitService _actionHitService;
+    private ActionHitService _actionHitService;
 
     /**
      * {@inheritDoc}

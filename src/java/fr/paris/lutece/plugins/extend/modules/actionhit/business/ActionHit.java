@@ -17,24 +17,6 @@ public class ActionHit
     private int _nHit;
 
     /**
-     * Get the id of the action hit
-     * @return The id of the action hit
-     */
-    public int getIdActionHit( )
-    {
-        return _nIdActionHit;
-    }
-
-    /**
-     * Set the id of the action hit
-     * @param nIdActionHit The id of the action hit
-     */
-    public void setIdActionHit( int nIdActionHit )
-    {
-        this._nIdActionHit = nIdActionHit;
-    }
-
-    /**
      * Default constructor
      */
     public ActionHit( )
@@ -55,6 +37,24 @@ public class ActionHit
         this._strIdExtendableResource = strIdExtendableResource;
         this._strExtendableResourceType = strExtendableResourceType;
         this._nHit = nHit;
+    }
+
+    /**
+     * Get the id of the action hit
+     * @return The id of the action hit
+     */
+    public int getIdActionHit( )
+    {
+        return _nIdActionHit;
+    }
+
+    /**
+     * Set the id of the action hit
+     * @param nIdActionHit The id of the action hit
+     */
+    public void setIdActionHit( int nIdActionHit )
+    {
+        this._nIdActionHit = nIdActionHit;
     }
 
     /**

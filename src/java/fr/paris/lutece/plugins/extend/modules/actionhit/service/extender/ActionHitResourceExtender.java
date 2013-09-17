@@ -59,7 +59,7 @@ public class ActionHitResourceExtender extends AbstractResourceExtender
 
     @Inject
     @Named( ActionHitService.BEAN_NAME )
-    ActionHitService _actionHitService;
+    private ActionHitService _actionHitService;
 
     /**
      * {@inheritDoc}

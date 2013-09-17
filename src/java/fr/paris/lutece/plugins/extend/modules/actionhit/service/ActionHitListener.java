@@ -18,7 +18,7 @@ public class ActionHitListener implements IExtendableResourceActionHitListener
 {
     @Inject
     @Named( ActionHitService.BEAN_NAME )
-    ActionHitService _actionHitService;
+    private ActionHitService _actionHitService;
 
     /**
      * {@inheritDoc}
