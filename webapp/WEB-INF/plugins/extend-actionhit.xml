@@ -21,6 +21,6 @@
     <!-- if the plugin must have a connection pool with parameter : 1 - yes, 0 - no -->
     <db-pool-required>1</db-pool-required>
     
-    <admin-features />
+    <admin-features/>
     
 </plug-in>
