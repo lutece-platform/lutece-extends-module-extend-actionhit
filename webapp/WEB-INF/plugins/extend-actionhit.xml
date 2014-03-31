@@ -11,7 +11,7 @@
     <changes/>
     <user-guide/>
     <provider-url>http://lutece.paris.fr</provider-url>
-    <icon-url>images/admin/skin/plugins/extend/modules/actionhit/extend-actionbar.png</icon-url>
+    <icon-url>images/admin/skin/plugins/extend/modules/actionhit/extend-actionhit.png</icon-url>
     <copyright>Copyright 2001-2012 Mairie de Paris</copyright>
     <core-version-dependency>
         <min-core-version>4.0.0</min-core-version>
