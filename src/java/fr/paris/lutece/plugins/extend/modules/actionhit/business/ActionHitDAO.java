@@ -67,7 +67,7 @@ public class ActionHitDAO implements IActionHitDAO
     public ActionHit findByActionNameAndResource( String strActionName, String strIdExtendableResource,
             String strExtendableResourceType, Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_FIND_BY_ACTION_NAME_AND_RESOURCE );
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_FIND_BY_ACTION_NAME_AND_RESOURCE, plugin );
         daoUtil.setString( 1, strActionName );
         daoUtil.setString( 2, strIdExtendableResource );
         daoUtil.setString( 3, strExtendableResourceType );
