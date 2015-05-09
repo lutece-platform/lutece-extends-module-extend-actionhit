@@ -33,16 +33,21 @@
  */
 package fr.paris.lutece.plugins.extend.modules.actionhit.business;
 
+import java.io.Serializable;
+
 
 /**
  * Class that count the number of times an action is performed over a resource
  */
-public class ActionHit
+public class ActionHit implements Serializable
 {
     /**
      * ActionHit resource type
      */
     public static final String RESOURCE_TYPE = "ACTION_HIT";
+    
+    private static final long serialVersionUID = 1L;
+    
     private int _nIdActionHit;
     private String _strActionName;
     private String _strExtendableResourceType;
@@ -65,10 +70,10 @@ public class ActionHit
      */
     public ActionHit( String strActionName, String strIdExtendableResource, String strExtendableResourceType, int nHit )
     {
-        this._strActionName = strActionName;
-        this._strIdExtendableResource = strIdExtendableResource;
-        this._strExtendableResourceType = strExtendableResourceType;
-        this._nHit = nHit;
+        _strActionName = strActionName;
+        _strIdExtendableResource = strIdExtendableResource;
+        _strExtendableResourceType = strExtendableResourceType;
+        _nHit = nHit;
     }
 
     /**
@@ -86,7 +91,7 @@ public class ActionHit
      */
     public void setIdActionHit( int nIdActionHit )
     {
-        this._nIdActionHit = nIdActionHit;
+        _nIdActionHit = nIdActionHit;
     }
 
     /**
@@ -104,7 +109,7 @@ public class ActionHit
      */
     public void setActionName( String strActionName )
     {
-        this._strActionName = strActionName;
+        _strActionName = strActionName;
     }
 
     /**
@@ -123,7 +128,7 @@ public class ActionHit
      */
     public void setExtendableResourceType( String strExtendableResourceType )
     {
-        this._strExtendableResourceType = strExtendableResourceType;
+        _strExtendableResourceType = strExtendableResourceType;
     }
 
     /**
@@ -141,7 +146,7 @@ public class ActionHit
      */
     public void setIdExtendableResource( String strIdExtendableResource )
     {
-        this._strIdExtendableResource = strIdExtendableResource;
+        _strIdExtendableResource = strIdExtendableResource;
     }
 
     /**
@@ -159,6 +164,6 @@ public class ActionHit
      */
     public void setHit( int nHit )
     {
-        this._nHit = nHit;
+        _nHit = nHit;
     }
 }
