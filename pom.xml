@@ -46,9 +46,9 @@
     </properties>
     
     <scm>
-        <connection>scm:svn:http://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/extends/module-extend-actionhit</connection>
-        <developerConnection>scm:svn:https://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/extends/module-extend-actionhit</developerConnection>
-        <url>http://dev.lutece.paris.fr/viewvc/lutece/portal/trunk/plugins/extends/module-extend-actionhit</url>
+        <connection>scm:git:https://github.com/lutece-platform/lutece-extends-module-extend-actionhit.git</connection>
+        <developerConnection>scm:git:https://github.com/lutece-platform/lutece-extends-module-extend-actionhit.git</developerConnection>
+        <url>https://github.com/lutece-platform/lutece-extends-module-extend-actionhit.git</url>
     </scm>
     
 </project>
