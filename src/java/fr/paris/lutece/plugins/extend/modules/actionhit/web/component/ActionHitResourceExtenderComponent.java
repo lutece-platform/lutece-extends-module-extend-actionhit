@@ -42,31 +42,30 @@ import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.inject.Inject;
+
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
- * 
+ *
  * ActionHitResourceExtenderComponent
- * 
+ *
  */
 public class ActionHitResourceExtenderComponent extends NoConfigResourceExtenderComponent
 {
     // TEMPLATES
     private static final String TEMPLATE_ACTION_HIT = "skin/plugins/extend/modules/actionhit/action_hit.html";
-
     private static final String MARK_ACTION_HIT = "action_hit";
-
     private static final String JSON_KEY_ACTION_NAME = "actionName";
 
     // SERVICES
@@ -78,7 +77,7 @@ public class ActionHitResourceExtenderComponent extends NoConfigResourceExtender
      */
     @Override
     public void buildXmlAddOn( String strIdExtendableResource, String strExtendableResourceType, String strParameters,
-            StringBuffer strXml )
+        StringBuffer strXml )
     {
         // Nothing yet
     }
@@ -88,28 +87,32 @@ public class ActionHitResourceExtenderComponent extends NoConfigResourceExtender
      */
     @Override
     public String getPageAddOn( String strIdExtendableResource, String strExtendableResourceType, String strParameters,
-            HttpServletRequest request )
+        HttpServletRequest request )
     {
         // Method to get the html code of the extension in front office
         ActionHit actionsHit;
         String strActionName = getActionNameFromParameters( strParameters );
+
         // If there is no action name, we return an empty string
         if ( strActionName == null )
         {
             return StringUtils.EMPTY;
         }
-        actionsHit = _actionHitService
-                .findActionHit( strActionName, strIdExtendableResource, strExtendableResourceType );
+
+        actionsHit = _actionHitService.findActionHit( strActionName, strIdExtendableResource, strExtendableResourceType );
+
         if ( actionsHit == null )
         {
             // If no action hit was found, we create a new one with 0 hit 
             actionsHit = new ActionHit( strActionName, strIdExtendableResource, strExtendableResourceType, 0 );
         }
 
-        Map<String, Object> model = new HashMap<String, Object>( );
+        Map<String, Object> model = new HashMap<String, Object>(  );
         model.put( MARK_ACTION_HIT, actionsHit );
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_ACTION_HIT, request.getLocale( ), model );
-        return template.getHtml( );
+
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_ACTION_HIT, request.getLocale(  ), model );
+
+        return template.getHtml(  );
     }
 
     /**
@@ -130,6 +133,7 @@ public class ActionHitResourceExtenderComponent extends NoConfigResourceExtender
     {
         JSONObject jsonParameters = JSONUtils.parseParameters( strParameters );
         String strActionName = null;
+
         if ( jsonParameters != null )
         {
             try
@@ -138,7 +142,7 @@ public class ActionHitResourceExtenderComponent extends NoConfigResourceExtender
             }
             catch ( JSONException je )
             {
-                AppLogService.debug( je.getMessage( ), je );
+                AppLogService.debug( je.getMessage(  ), je );
             }
         }
 

@@ -55,19 +55,18 @@ public class ActionHitPlugin extends Plugin
      * {@inheritDoc}
      */
     @Override
-    public void init( )
+    public void init(  )
     {
-        IExtendableResourceRemovalListener actionHitListener = SpringContextService
-                .getBean( ActionHitExtendableResourceRemovalListener.BEAN_NAME );
+        IExtendableResourceRemovalListener actionHitListener = SpringContextService.getBean( ActionHitExtendableResourceRemovalListener.BEAN_NAME );
         ExtendableResourceRemovalListenerService.registerListener( actionHitListener );
     }
 
     /**
      * Gets the plugin.
-     * 
+     *
      * @return the plugin
      */
-    public static Plugin getPlugin( )
+    public static Plugin getPlugin(  )
     {
         return PluginService.getPlugin( PLUGIN_NAME );
     }

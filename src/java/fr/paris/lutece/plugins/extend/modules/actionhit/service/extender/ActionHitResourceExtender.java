@@ -37,11 +37,12 @@ import fr.paris.lutece.plugins.extend.business.extender.ResourceExtenderDTO;
 import fr.paris.lutece.plugins.extend.modules.actionhit.service.ActionHitService;
 import fr.paris.lutece.plugins.extend.service.extender.AbstractResourceExtender;
 
+import org.apache.commons.lang.StringUtils;
+
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -53,10 +54,8 @@ import org.apache.commons.lang.StringUtils;
  */
 public class ActionHitResourceExtender extends AbstractResourceExtender
 {
-
     /** The Constant EXTENDER_TYPE. */
     public static final String EXTENDER_TYPE = "actionhit";
-
     @Inject
     @Named( ActionHitService.BEAN_NAME )
     private ActionHitService _actionHitService;
@@ -69,7 +68,7 @@ public class ActionHitResourceExtender extends AbstractResourceExtender
     {
         if ( StringUtils.isNotBlank( strExtenderType ) )
         {
-            return getKey( ).equals( strExtenderType );
+            return getKey(  ).equals( strExtenderType );
         }
 
         return false;
@@ -80,10 +79,10 @@ public class ActionHitResourceExtender extends AbstractResourceExtender
      */
     @Override
     public String getContent( String strIdExtendableResource, String strExtendableResourceType, String strParameters,
-            HttpServletRequest request )
+        HttpServletRequest request )
     {
-        return getResourceExtenderComponent( ).getPageAddOn( strIdExtendableResource, strExtendableResourceType,
-                strParameters, request );
+        return getResourceExtenderComponent(  )
+                   .getPageAddOn( strIdExtendableResource, strExtendableResourceType, strParameters, request );
     }
 
     /**

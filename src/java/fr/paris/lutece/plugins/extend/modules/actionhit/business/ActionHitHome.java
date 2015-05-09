@@ -1,3 +1,36 @@
+/*
+ * Copyright (c) 2002-2015, Mairie de Paris
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *  1. Redistributions of source code must retain the above copyright notice
+ *     and the following disclaimer.
+ *
+ *  2. Redistributions in binary form must reproduce the above copyright notice
+ *     and the following disclaimer in the documentation and/or other materials
+ *     provided with the distribution.
+ *
+ *  3. Neither the name of 'Mairie de Paris' nor 'Lutece' nor the names of its
+ *     contributors may be used to endorse or promote products derived from
+ *     this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * License 1.0
+ */
 package fr.paris.lutece.plugins.extend.modules.actionhit.business;
 
 import fr.paris.lutece.plugins.extend.modules.actionhit.service.ActionHitPlugin;
@@ -14,15 +47,13 @@ import java.util.List;
 public final class ActionHitHome
 {
     private static IActionHitDAO _dao = SpringContextService.getBean( "extend-actionhit.actionHitDAO" );
-
     private static Plugin _plugin;
 
     /**
      * Private constructor
      */
-    private ActionHitHome( )
+    private ActionHitHome(  )
     {
-
     }
 
     /**
@@ -31,7 +62,7 @@ public final class ActionHitHome
      */
     public static void create( ActionHit actionHit )
     {
-        _dao.create( actionHit, getPlugin( ) );
+        _dao.create( actionHit, getPlugin(  ) );
     }
 
     /**
@@ -45,10 +76,10 @@ public final class ActionHitHome
      *         associated to the given resource
      */
     public static ActionHit findByActionNameAndResource( String strActionName, String strIdExtendableResource,
-            String strExtendableResourceType )
+        String strExtendableResourceType )
     {
         return _dao.findByActionNameAndResource( strActionName, strIdExtendableResource, strExtendableResourceType,
-                getPlugin( ) );
+            getPlugin(  ) );
     }
 
     /**
@@ -57,7 +88,7 @@ public final class ActionHitHome
      */
     public static void updateHit( ActionHit actionHit )
     {
-        _dao.updateHit( actionHit, getPlugin( ) );
+        _dao.updateHit( actionHit, getPlugin(  ) );
     }
 
     /**
@@ -66,7 +97,7 @@ public final class ActionHitHome
      */
     public static void delete( ActionHit actionHit )
     {
-        _dao.delete( actionHit.getIdActionHit( ), getPlugin( ) );
+        _dao.delete( actionHit.getIdActionHit(  ), getPlugin(  ) );
     }
 
     /**
@@ -75,7 +106,7 @@ public final class ActionHitHome
      */
     public static void delete( int nIdActionHit )
     {
-        _dao.delete( nIdActionHit, getPlugin( ) );
+        _dao.delete( nIdActionHit, getPlugin(  ) );
     }
 
     /**
@@ -86,16 +117,16 @@ public final class ActionHitHome
      */
     public static void deleteByResource( String strExtendableResourceType, String strIdExtendableResource )
     {
-        _dao.deleteByResource( strExtendableResourceType, strIdExtendableResource, getPlugin( ) );
+        _dao.deleteByResource( strExtendableResourceType, strIdExtendableResource, getPlugin(  ) );
     }
 
     /**
      * Find every action hit
      * @return The list of action hits
      */
-    public static List<ActionHit> findAll( )
+    public static List<ActionHit> findAll(  )
     {
-        return _dao.findAll( getPlugin( ) );
+        return _dao.findAll( getPlugin(  ) );
     }
 
     /**
@@ -107,7 +138,7 @@ public final class ActionHitHome
      */
     public static List<ActionHit> findAllByResource( String strExtendableResourceType, String strIdExtendableResource )
     {
-        return _dao.findAllByResource( strExtendableResourceType, strIdExtendableResource, getPlugin( ) );
+        return _dao.findAllByResource( strExtendableResourceType, strIdExtendableResource, getPlugin(  ) );
     }
 
     /**
@@ -119,19 +150,20 @@ public final class ActionHitHome
      */
     public static List<ActionHit> findActionHitsByAction( String strActionName, String strExtendableResourceType )
     {
-        return _dao.findActionHitsByAction( strActionName, strExtendableResourceType, getPlugin( ) );
+        return _dao.findActionHitsByAction( strActionName, strExtendableResourceType, getPlugin(  ) );
     }
 
     /**
      * Get the action hit plugin
      * @return The action hit plugin
      */
-    private static Plugin getPlugin( )
+    private static Plugin getPlugin(  )
     {
         if ( _plugin == null )
         {
             _plugin = PluginService.getPlugin( ActionHitPlugin.PLUGIN_NAME );
         }
+
         return _plugin;
     }
 }

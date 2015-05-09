@@ -53,7 +53,7 @@ public class ActionHitInstallerPluginAction extends AbstractPluginAction<IExtend
     implements IExtendableResourcePluginAction
 {
     private static final String ACTION_NAME = "Action hit";
-	
+
     // TEMPLATE
     private static final String TEMPLATE_BUTTON = "../plugins/extend/modules/actionhit/actions/install_actionhit.html";
 
@@ -63,7 +63,7 @@ public class ActionHitInstallerPluginAction extends AbstractPluginAction<IExtend
     @Override
     public boolean isInvoked( HttpServletRequest request )
     {
-		return false;
+        return false;
     }
 
     /**
@@ -99,6 +99,6 @@ public class ActionHitInstallerPluginAction extends AbstractPluginAction<IExtend
     public IPluginActionResult process( HttpServletRequest request, HttpServletResponse response, AdminUser adminUser,
         IExtendableResource sessionFields ) throws AccessDeniedException
     {
-		return null;
+        return null;
     }
 }

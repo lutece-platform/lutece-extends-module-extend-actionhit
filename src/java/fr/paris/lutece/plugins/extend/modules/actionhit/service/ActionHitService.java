@@ -1,14 +1,48 @@
+/*
+ * Copyright (c) 2002-2015, Mairie de Paris
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *  1. Redistributions of source code must retain the above copyright notice
+ *     and the following disclaimer.
+ *
+ *  2. Redistributions in binary form must reproduce the above copyright notice
+ *     and the following disclaimer in the documentation and/or other materials
+ *     provided with the distribution.
+ *
+ *  3. Neither the name of 'Mairie de Paris' nor 'Lutece' nor the names of its
+ *     contributors may be used to endorse or promote products derived from
+ *     this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * License 1.0
+ */
 package fr.paris.lutece.plugins.extend.modules.actionhit.service;
 
 import fr.paris.lutece.plugins.extend.modules.actionhit.business.ActionHit;
 import fr.paris.lutece.plugins.extend.modules.actionhit.business.ActionHitHome;
 import fr.paris.lutece.portal.service.cache.AbstractCacheableService;
 
+import org.apache.commons.lang.StringUtils;
+
+import org.springframework.beans.factory.InitializingBean;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.InitializingBean;
 
 
 /**
@@ -20,9 +54,7 @@ public class ActionHitService extends AbstractCacheableService implements Initia
      * Bean name
      */
     public static final String BEAN_NAME = "extend-actionhit.actionHitService";
-
     private static final String SERVICE_NAME = "action Hit Cache Service";
-
     private static final String CONSTANT_UNDERSCORE = "_";
 
     /**
@@ -32,9 +64,8 @@ public class ActionHitService extends AbstractCacheableService implements Initia
     public void createActionHit( ActionHit actionHit )
     {
         ActionHitHome.create( actionHit );
-        putInCache(
-                getCacheKeyFromResource( actionHit.getActionName( ), actionHit.getIdExtendableResource( ),
-                        actionHit.getExtendableResourceType( ) ), actionHit );
+        putInCache( getCacheKeyFromResource( actionHit.getActionName(  ), actionHit.getIdExtendableResource(  ),
+                actionHit.getExtendableResourceType(  ) ), actionHit );
     }
 
     /**
@@ -47,17 +78,20 @@ public class ActionHitService extends AbstractCacheableService implements Initia
      * @return The action hit, or null if no action hit has this id
      */
     public ActionHit findActionHit( String strActionName, String strIdExtendableResource,
-            String strExtendableResourceType )
+        String strExtendableResourceType )
     {
         String strCacheKey = getCacheKeyFromResource( strActionName, strIdExtendableResource, strExtendableResourceType );
         ActionHit actionHit = (ActionHit) getFromCache( strCacheKey );
+
         if ( actionHit != null )
         {
             return actionHit;
         }
+
         actionHit = ActionHitHome.findByActionNameAndResource( strActionName, strIdExtendableResource,
                 strExtendableResourceType );
         putInCache( strCacheKey, actionHit );
+
         return actionHit;
     }
 
@@ -89,9 +123,9 @@ public class ActionHitService extends AbstractCacheableService implements Initia
      * Get the list of action hits
      * @return The list of action hits
      */
-    public List<ActionHit> findAllActionHits( )
+    public List<ActionHit> findAllActionHits(  )
     {
-        return ActionHitHome.findAll( );
+        return ActionHitHome.findAll(  );
     }
 
     /**
@@ -101,9 +135,8 @@ public class ActionHitService extends AbstractCacheableService implements Initia
     public void updateActionHit( ActionHit actionHit )
     {
         ActionHitHome.updateHit( actionHit );
-        putInCache(
-                getCacheKeyFromResource( actionHit.getActionName( ), actionHit.getIdExtendableResource( ),
-                        actionHit.getExtendableResourceType( ) ), actionHit );
+        putInCache( getCacheKeyFromResource( actionHit.getActionName(  ), actionHit.getIdExtendableResource(  ),
+                actionHit.getExtendableResourceType(  ) ), actionHit );
     }
 
     /**
@@ -128,8 +161,8 @@ public class ActionHitService extends AbstractCacheableService implements Initia
     public void removeActionHit( ActionHit actionHit )
     {
         ActionHitHome.delete( actionHit );
-        removeKey( getCacheKeyFromResource( actionHit.getActionName( ), actionHit.getIdExtendableResource( ),
-                actionHit.getExtendableResourceType( ) ) );
+        removeKey( getCacheKeyFromResource( actionHit.getActionName(  ), actionHit.getIdExtendableResource(  ),
+                actionHit.getExtendableResourceType(  ) ) );
     }
 
     /**
@@ -141,15 +174,18 @@ public class ActionHitService extends AbstractCacheableService implements Initia
     public void removeByResource( String strExtendableResourceType, String strIdExtendableResource )
     {
         ActionHitHome.deleteByResource( strExtendableResourceType, strIdExtendableResource );
+
         String strKeySuffixe = getCacheKeyWithoutAction( strIdExtendableResource, strExtendableResourceType );
-        List<String> listRemovedKeys = new ArrayList<String>( );
-        for ( String strKey : getKeys( ) )
+        List<String> listRemovedKeys = new ArrayList<String>(  );
+
+        for ( String strKey : getKeys(  ) )
         {
             if ( StringUtils.contains( strKey, strKeySuffixe ) )
             {
                 listRemovedKeys.add( strKey );
             }
         }
+
         for ( String strKey : listRemovedKeys )
         {
             removeKey( strKey );
@@ -160,7 +196,7 @@ public class ActionHitService extends AbstractCacheableService implements Initia
      * {@inheritDoc}
      */
     @Override
-    public String getName( )
+    public String getName(  )
     {
         return SERVICE_NAME;
     }
@@ -169,9 +205,9 @@ public class ActionHitService extends AbstractCacheableService implements Initia
      * {@inheritDoc}
      */
     @Override
-    public void afterPropertiesSet( ) throws Exception
+    public void afterPropertiesSet(  ) throws Exception
     {
-        initCache( );
+        initCache(  );
     }
 
     /**
@@ -182,12 +218,13 @@ public class ActionHitService extends AbstractCacheableService implements Initia
      * @return The key of the action hit in the cache
      */
     private String getCacheKeyFromResource( String strActionName, String strIdExtendableResource,
-            String strExtendableResourceType )
+        String strExtendableResourceType )
     {
         StringBuilder sbKey = new StringBuilder( strActionName );
         sbKey.append( CONSTANT_UNDERSCORE ).append( strIdExtendableResource ).append( CONSTANT_UNDERSCORE )
-                .append( strExtendableResourceType );
-        return sbKey.toString( );
+             .append( strExtendableResourceType );
+
+        return sbKey.toString(  );
     }
 
     /**
@@ -202,6 +239,7 @@ public class ActionHitService extends AbstractCacheableService implements Initia
     {
         StringBuilder sbKey = new StringBuilder( CONSTANT_UNDERSCORE );
         sbKey.append( strIdExtendableResource ).append( CONSTANT_UNDERSCORE ).append( strExtendableResourceType );
-        return sbKey.toString( );
+
+        return sbKey.toString(  );
     }
 }
