@@ -3,7 +3,7 @@
     <!-- Plugin Informations -->
     <name>extend-actionhit</name>
     <class>fr.paris.lutece.plugins.extend.modules.actionhit.service.ActionHitPlugin</class>
-    <version>1.0.4</version>
+    <version>1.0.5-SNAPSHOT</version>
     <description>module.extend.actionhit.module.description</description>
     <provider>module.extend.actionhit.module.provider</provider>
     <documentation/>
