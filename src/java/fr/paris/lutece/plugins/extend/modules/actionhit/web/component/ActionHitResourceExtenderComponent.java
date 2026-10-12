@@ -37,21 +37,24 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.paris.lutece.plugins.extend.business.extender.ResourceExtenderDTO;
 import fr.paris.lutece.plugins.extend.modules.actionhit.business.ActionHit;
 import fr.paris.lutece.plugins.extend.modules.actionhit.service.ActionHitService;
+import fr.paris.lutece.plugins.extend.modules.actionhit.service.extender.ActionHitResourceExtender;
+import fr.paris.lutece.plugins.extend.service.extender.IResourceExtender;
 import fr.paris.lutece.plugins.extend.util.JSONUtils;
 import fr.paris.lutece.plugins.extend.web.component.NoConfigResourceExtenderComponent;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
-import org.apache.commons.lang.StringUtils;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import javax.inject.Inject;
-
-import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -59,16 +62,28 @@ import javax.servlet.http.HttpServletRequest;
  * ActionHitResourceExtenderComponent
  *
  */
+@ApplicationScoped
 public class ActionHitResourceExtenderComponent extends NoConfigResourceExtenderComponent
 {
-    // TEMPLATES
     private static final String TEMPLATE_ACTION_HIT = "skin/plugins/extend/modules/actionhit/action_hit.html";
     private static final String MARK_ACTION_HIT = "action_hit";
     private static final String JSON_KEY_ACTION_NAME = "actionName";
 
-    // SERVICES
     @Inject
     private ActionHitService _actionHitService;
+
+    @Inject
+    @Named( ActionHitResourceExtender.BEAN_NAME )
+    private IResourceExtender _resourceExtender;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IResourceExtender getResourceExtender(  )
+    {
+        return _resourceExtender;
+    }
 
     /**
      * {@inheritDoc}
@@ -77,7 +92,6 @@ public class ActionHitResourceExtenderComponent extends NoConfigResourceExtender
     public void buildXmlAddOn( String strIdExtendableResource, String strExtendableResourceType, String strParameters,
         StringBuffer strXml )
     {
-        // Nothing yet
     }
 
     /**
@@ -87,11 +101,9 @@ public class ActionHitResourceExtenderComponent extends NoConfigResourceExtender
     public String getPageAddOn( String strIdExtendableResource, String strExtendableResourceType, String strParameters,
         HttpServletRequest request )
     {
-        // Method to get the html code of the extension in front office
         ActionHit actionsHit;
         String strActionName = getActionNameFromParameters( strParameters );
 
-        // If there is no action name, we return an empty string
         if ( strActionName == null )
         {
             return StringUtils.EMPTY;
@@ -101,11 +113,10 @@ public class ActionHitResourceExtenderComponent extends NoConfigResourceExtender
 
         if ( actionsHit == null )
         {
-            // If no action hit was found, we create a new one with 0 hit 
             actionsHit = new ActionHit( strActionName, strIdExtendableResource, strExtendableResourceType, 0 );
         }
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<>(  );
         model.put( MARK_ACTION_HIT, actionsHit );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_ACTION_HIT, request.getLocale(  ), model );
@@ -140,7 +151,7 @@ public class ActionHitResourceExtenderComponent extends NoConfigResourceExtender
             }
             else 
             {
-                AppLogService.debug( "No " + JSON_KEY_ACTION_NAME + " found in " + jsonParameters );
+                AppLogService.debug( "No {} found in {}", JSON_KEY_ACTION_NAME, jsonParameters );
             }
         }
 

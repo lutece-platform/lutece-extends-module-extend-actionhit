@@ -34,15 +34,16 @@
 package fr.paris.lutece.plugins.extend.modules.actionhit.service.extender;
 
 import fr.paris.lutece.plugins.extend.business.extender.ResourceExtenderDTO;
-import fr.paris.lutece.plugins.extend.modules.actionhit.service.ActionHitService;
+import fr.paris.lutece.plugins.extend.modules.actionhit.web.component.ActionHitResourceExtenderComponent;
 import fr.paris.lutece.plugins.extend.service.extender.AbstractResourceExtender;
 
-import org.apache.commons.lang.StringUtils;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletRequest;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
 
 
 /**
@@ -52,13 +53,32 @@ import javax.servlet.http.HttpServletRequest;
  * </strong><br />
  * Examples : @Extender[22,document,actionhit,{actionName:'download'}]@
  */
+@ApplicationScoped
+@Named( ActionHitResourceExtender.BEAN_NAME )
 public class ActionHitResourceExtender extends AbstractResourceExtender
 {
     /** The Constant EXTENDER_TYPE. */
     public static final String EXTENDER_TYPE = "actionhit";
+
+    /** The bean name */
+    public static final String BEAN_NAME = "extend-actionhit.actionHitResourceExtender";
+    private static final String I18N_TITLE_KEY = "module.extend.actionhit.extender.actionhit.label";
+
     @Inject
-    @Named( ActionHitService.BEAN_NAME )
-    private ActionHitService _actionHitService;
+    private ActionHitResourceExtenderComponent _resourceExtenderComponent;
+
+    /**
+     * Set up the key, the title and the options of the extender
+     */
+    @PostConstruct
+    public void init(  )
+    {
+        setResourceExtenderComponent( _resourceExtenderComponent );
+        setKey( EXTENDER_TYPE );
+        setI18nTitleKey( I18N_TITLE_KEY );
+        setConfigRequired( false );
+        setHistoryEnable( false );
+    }
 
     /**
      * {@inheritDoc}
@@ -91,7 +111,6 @@ public class ActionHitResourceExtender extends AbstractResourceExtender
     @Override
     public void doCreateResourceAddOn( ResourceExtenderDTO extender )
     {
-        // Nothing to do
     }
 
     /**
@@ -100,6 +119,5 @@ public class ActionHitResourceExtender extends AbstractResourceExtender
     @Override
     public void doDeleteResourceAddOn( ResourceExtenderDTO extender )
     {
-        // Nothing to do
     }
 }

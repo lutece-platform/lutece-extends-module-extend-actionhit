@@ -33,10 +33,10 @@
  */
 package fr.paris.lutece.plugins.extend.modules.actionhit.business;
 
-import fr.paris.lutece.plugins.extend.modules.actionhit.service.ActionHitPlugin;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
+
+import jakarta.enterprise.inject.spi.CDI;
 
 import java.util.List;
 
@@ -46,8 +46,12 @@ import java.util.List;
  */
 public final class ActionHitHome
 {
-    private static IActionHitDAO _dao = SpringContextService.getBean( "extend-actionhit.actionHitDAO" );
-    private static Plugin _plugin;
+    /**
+     * Name of the module
+     */
+    public static final String PLUGIN_NAME = "extend-actionhit";
+    private static IActionHitDAO _dao = CDI.current(  ).select( IActionHitDAO.class ).get(  );
+    private static Plugin _plugin = PluginService.getPlugin( PLUGIN_NAME );
 
     /**
      * Private constructor
@@ -62,7 +66,7 @@ public final class ActionHitHome
      */
     public static void create( ActionHit actionHit )
     {
-        _dao.create( actionHit, getPlugin(  ) );
+        _dao.create( actionHit, _plugin );
     }
 
     /**
@@ -79,7 +83,7 @@ public final class ActionHitHome
         String strExtendableResourceType )
     {
         return _dao.findByActionNameAndResource( strActionName, strIdExtendableResource, strExtendableResourceType,
-            getPlugin(  ) );
+            _plugin );
     }
 
     /**
@@ -88,7 +92,16 @@ public final class ActionHitHome
      */
     public static void updateHit( ActionHit actionHit )
     {
-        _dao.updateHit( actionHit, getPlugin(  ) );
+        _dao.updateHit( actionHit, _plugin );
+    }
+
+    /**
+     * Add one hit to an action hit in a single statement
+     * @param nIdActionHit The id of the action hit
+     */
+    public static void incrementHit( int nIdActionHit )
+    {
+        _dao.incrementHit( nIdActionHit, _plugin );
     }
 
     /**
@@ -97,7 +110,7 @@ public final class ActionHitHome
      */
     public static void delete( ActionHit actionHit )
     {
-        _dao.delete( actionHit.getIdActionHit(  ), getPlugin(  ) );
+        _dao.delete( actionHit.getIdActionHit(  ), _plugin );
     }
 
     /**
@@ -106,7 +119,7 @@ public final class ActionHitHome
      */
     public static void delete( int nIdActionHit )
     {
-        _dao.delete( nIdActionHit, getPlugin(  ) );
+        _dao.delete( nIdActionHit, _plugin );
     }
 
     /**
@@ -117,7 +130,7 @@ public final class ActionHitHome
      */
     public static void deleteByResource( String strExtendableResourceType, String strIdExtendableResource )
     {
-        _dao.deleteByResource( strExtendableResourceType, strIdExtendableResource, getPlugin(  ) );
+        _dao.deleteByResource( strExtendableResourceType, strIdExtendableResource, _plugin );
     }
 
     /**
@@ -126,7 +139,7 @@ public final class ActionHitHome
      */
     public static List<ActionHit> findAll(  )
     {
-        return _dao.findAll( getPlugin(  ) );
+        return _dao.findAll( _plugin );
     }
 
     /**
@@ -138,7 +151,7 @@ public final class ActionHitHome
      */
     public static List<ActionHit> findAllByResource( String strExtendableResourceType, String strIdExtendableResource )
     {
-        return _dao.findAllByResource( strExtendableResourceType, strIdExtendableResource, getPlugin(  ) );
+        return _dao.findAllByResource( strExtendableResourceType, strIdExtendableResource, _plugin );
     }
 
     /**
@@ -150,20 +163,6 @@ public final class ActionHitHome
      */
     public static List<ActionHit> findActionHitsByAction( String strActionName, String strExtendableResourceType )
     {
-        return _dao.findActionHitsByAction( strActionName, strExtendableResourceType, getPlugin(  ) );
-    }
-
-    /**
-     * Get the action hit plugin
-     * @return The action hit plugin
-     */
-    private static Plugin getPlugin(  )
-    {
-        if ( _plugin == null )
-        {
-            _plugin = PluginService.getPlugin( ActionHitPlugin.PLUGIN_NAME );
-        }
-
-        return _plugin;
+        return _dao.findActionHitsByAction( strActionName, strExtendableResourceType, _plugin );
     }
 }

@@ -34,23 +34,25 @@
 package fr.paris.lutece.plugins.extend.modules.actionhit.service;
 
 import fr.paris.lutece.plugins.extend.modules.actionhit.business.ActionHit;
+import fr.paris.lutece.plugins.extend.modules.actionhit.business.ActionHitHome;
+import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.resource.IExtendableResourceActionHitListener;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 
 /**
  * Action hit listener
  */
+@ApplicationScoped
 public class ActionHitListener implements IExtendableResourceActionHitListener
 {
     @Inject
-    @Named( ActionHitService.BEAN_NAME )
     private ActionHitService _actionHitService;
 
     /**
@@ -59,6 +61,11 @@ public class ActionHitListener implements IExtendableResourceActionHitListener
     @Override
     public int getActionHit( String strActionName, String strExtendableResourceType )
     {
+        if ( !PluginService.isPluginEnable( ActionHitHome.PLUGIN_NAME ) )
+        {
+            return 0;
+        }
+
         List<ActionHit> listActionsHits = _actionHitService.findActionHitsByAction( strActionName,
                 strExtendableResourceType );
         int nHits = 0;
@@ -77,9 +84,14 @@ public class ActionHitListener implements IExtendableResourceActionHitListener
     @Override
     public Map<String, Integer> getResourceHit( String strExtendableResourceId, String strExtendableResourceType )
     {
+        if ( !PluginService.isPluginEnable( ActionHitHome.PLUGIN_NAME ) )
+        {
+            return new HashMap<>(  );
+        }
+
         List<ActionHit> listActionsHits = _actionHitService.findActionHitsByResource( strExtendableResourceType,
                 strExtendableResourceId );
-        Map<String, Integer> resourceHit = new HashMap<String, Integer>( listActionsHits.size(  ) );
+        Map<String, Integer> resourceHit = new HashMap<>( listActionsHits.size(  ) );
 
         for ( ActionHit actionHit : listActionsHits )
         {
@@ -96,6 +108,11 @@ public class ActionHitListener implements IExtendableResourceActionHitListener
     public int getResourceActionHit( String strExtendableResourceId, String strExtendableResourceType,
         String strActionName )
     {
+        if ( !PluginService.isPluginEnable( ActionHitHome.PLUGIN_NAME ) )
+        {
+            return 0;
+        }
+
         ActionHit actionHit = _actionHitService.findActionHit( strActionName, strExtendableResourceId,
                 strExtendableResourceType );
 
@@ -109,18 +126,9 @@ public class ActionHitListener implements IExtendableResourceActionHitListener
     public void notifyActionOnResource( String strExtendableResourceId, String strExtendableResourceType,
         String strActionName )
     {
-        ActionHit actionHit = _actionHitService.findActionHit( strActionName, strExtendableResourceId,
-                strExtendableResourceType );
-
-        if ( actionHit == null )
+        if ( PluginService.isPluginEnable( ActionHitHome.PLUGIN_NAME ) )
         {
-            actionHit = new ActionHit( strActionName, strExtendableResourceId, strExtendableResourceType, 1 );
-            _actionHitService.createActionHit( actionHit );
-        }
-        else
-        {
-            actionHit.setHit( actionHit.getHit(  ) + 1 );
-            _actionHitService.updateActionHit( actionHit );
+            _actionHitService.incrementActionHit( strActionName, strExtendableResourceId, strExtendableResourceType );
         }
     }
 }

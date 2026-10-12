@@ -58,6 +58,13 @@ public interface IActionHitDAO
     void updateHit( ActionHit actionHit, Plugin plugin );
 
     /**
+     * Add one hit to an action hit in a single statement
+     * @param nIdActionHit The id of the action hit
+     * @param plugin The plugin
+     */
+    void incrementHit( int nIdActionHit, Plugin plugin );
+
+    /**
      * Delete an action hit
      * @param nIdActionHit The if of the action hit to delete
      * @param plugin The plugin
