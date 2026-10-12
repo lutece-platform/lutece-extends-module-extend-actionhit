@@ -33,21 +33,35 @@
  */
 package fr.paris.lutece.plugins.extend.modules.actionhit.service;
 
+import fr.paris.lutece.plugins.extend.modules.actionhit.business.ActionHitHome;
+import fr.paris.lutece.portal.service.plugin.PluginService;
+import fr.paris.lutece.portal.service.resource.ExtendableResourceRemovalListenerService;
 import fr.paris.lutece.portal.service.resource.IExtendableResourceRemovalListener;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.Initialized;
+import jakarta.enterprise.event.Observes;
+import jakarta.inject.Inject;
+import jakarta.servlet.ServletContext;
 
 
 /**
  * Listener to remove action hits when a resource is removed
  */
+@ApplicationScoped
 public class ActionHitExtendableResourceRemovalListener implements IExtendableResourceRemovalListener
 {
-    public static final String BEAN_NAME = "extend-actionhit.actionHitExtendableResourceRemovalListener";
     @Inject
-    @Named( ActionHitService.BEAN_NAME )
     private ActionHitService _actionHitService;
+
+    /**
+     * Register this listener when the application starts
+     * @param context The servlet context
+     */
+    public void initializedService( @Observes @Initialized( ApplicationScoped.class ) ServletContext context )
+    {
+        ExtendableResourceRemovalListenerService.registerListener( this );
+    }
 
     /**
      * {@inheritDoc}
@@ -55,6 +69,9 @@ public class ActionHitExtendableResourceRemovalListener implements IExtendableRe
     @Override
     public void doRemoveResourceExtentions( String strExtendableResourceType, String strIdExtendableResource )
     {
-        _actionHitService.removeByResource( strExtendableResourceType, strIdExtendableResource );
+        if ( PluginService.isPluginEnable( ActionHitHome.PLUGIN_NAME ) )
+        {
+            _actionHitService.removeByResource( strExtendableResourceType, strIdExtendableResource );
+        }
     }
 }

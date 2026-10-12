@@ -37,9 +37,8 @@ import fr.paris.lutece.plugins.extend.modules.actionhit.business.ActionHit;
 import fr.paris.lutece.plugins.extend.modules.actionhit.business.ActionHitHome;
 import fr.paris.lutece.portal.service.cache.AbstractCacheableService;
 
-import org.apache.commons.lang.StringUtils;
-
-import org.springframework.beans.factory.InitializingBean;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,12 +47,9 @@ import java.util.List;
 /**
  * ActionbarService
  */
-public class ActionHitService extends AbstractCacheableService implements InitializingBean
+@ApplicationScoped
+public class ActionHitService extends AbstractCacheableService<String, ActionHit>
 {
-    /**
-     * Bean name
-     */
-    public static final String BEAN_NAME = "extend-actionhit.actionHitService";
     private static final String SERVICE_NAME = "action Hit Cache Service";
     private static final String CONSTANT_UNDERSCORE = "_";
 
@@ -64,7 +60,7 @@ public class ActionHitService extends AbstractCacheableService implements Initia
     public void createActionHit( ActionHit actionHit )
     {
         ActionHitHome.create( actionHit );
-        putInCache( getCacheKeyFromResource( actionHit.getActionName(  ), actionHit.getIdExtendableResource(  ),
+        put( getCacheKeyFromResource( actionHit.getActionName(  ), actionHit.getIdExtendableResource(  ),
                 actionHit.getExtendableResourceType(  ) ), actionHit );
     }
 
@@ -81,7 +77,7 @@ public class ActionHitService extends AbstractCacheableService implements Initia
         String strExtendableResourceType )
     {
         String strCacheKey = getCacheKeyFromResource( strActionName, strIdExtendableResource, strExtendableResourceType );
-        ActionHit actionHit = (ActionHit) getFromCache( strCacheKey );
+        ActionHit actionHit = get( strCacheKey );
 
         if ( actionHit != null )
         {
@@ -90,7 +86,11 @@ public class ActionHitService extends AbstractCacheableService implements Initia
 
         actionHit = ActionHitHome.findByActionNameAndResource( strActionName, strIdExtendableResource,
                 strExtendableResourceType );
-        putInCache( strCacheKey, actionHit );
+
+        if ( actionHit != null )
+        {
+            put( strCacheKey, actionHit );
+        }
 
         return actionHit;
     }
@@ -135,8 +135,31 @@ public class ActionHitService extends AbstractCacheableService implements Initia
     public void updateActionHit( ActionHit actionHit )
     {
         ActionHitHome.updateHit( actionHit );
-        putInCache( getCacheKeyFromResource( actionHit.getActionName(  ), actionHit.getIdExtendableResource(  ),
+        put( getCacheKeyFromResource( actionHit.getActionName(  ), actionHit.getIdExtendableResource(  ),
                 actionHit.getExtendableResourceType(  ) ), actionHit );
+    }
+
+    /**
+     * Add one hit to an action on a resource, creating its counter on the first hit
+     * @param strActionName The name of the action
+     * @param strIdExtendableResource The id of the extendable resource
+     * @param strExtendableResourceType The type of the extendable resource
+     */
+    public void incrementActionHit( String strActionName, String strIdExtendableResource, String strExtendableResourceType )
+    {
+        ActionHit actionHit = ActionHitHome.findByActionNameAndResource( strActionName, strIdExtendableResource,
+                strExtendableResourceType );
+
+        if ( actionHit == null )
+        {
+            ActionHitHome.create( new ActionHit( strActionName, strIdExtendableResource, strExtendableResourceType, 1 ) );
+        }
+        else
+        {
+            ActionHitHome.incrementHit( actionHit.getIdActionHit(  ) );
+        }
+
+        remove( getCacheKeyFromResource( strActionName, strIdExtendableResource, strExtendableResourceType ) );
     }
 
     /**
@@ -149,9 +172,15 @@ public class ActionHitService extends AbstractCacheableService implements Initia
      */
     public void removeActionHit( String strActionName, String strIdExtendableResource, String strExtendableResourceType )
     {
-        removeActionHit( ActionHitHome.findByActionNameAndResource( strActionName, strIdExtendableResource,
-                strExtendableResourceType ) );
-        removeKey( getCacheKeyFromResource( strActionName, strIdExtendableResource, strExtendableResourceType ) );
+        ActionHit actionHit = ActionHitHome.findByActionNameAndResource( strActionName, strIdExtendableResource,
+                strExtendableResourceType );
+
+        if ( actionHit != null )
+        {
+            ActionHitHome.delete( actionHit );
+        }
+
+        remove( getCacheKeyFromResource( strActionName, strIdExtendableResource, strExtendableResourceType ) );
     }
 
     /**
@@ -161,7 +190,7 @@ public class ActionHitService extends AbstractCacheableService implements Initia
     public void removeActionHit( ActionHit actionHit )
     {
         ActionHitHome.delete( actionHit );
-        removeKey( getCacheKeyFromResource( actionHit.getActionName(  ), actionHit.getIdExtendableResource(  ),
+        remove( getCacheKeyFromResource( actionHit.getActionName(  ), actionHit.getIdExtendableResource(  ),
                 actionHit.getExtendableResourceType(  ) ) );
     }
 
@@ -176,11 +205,11 @@ public class ActionHitService extends AbstractCacheableService implements Initia
         ActionHitHome.deleteByResource( strExtendableResourceType, strIdExtendableResource );
 
         String strKeySuffixe = getCacheKeyWithoutAction( strIdExtendableResource, strExtendableResourceType );
-        List<String> listRemovedKeys = new ArrayList<String>(  );
+        List<String> listRemovedKeys = new ArrayList<>(  );
 
         for ( String strKey : getKeys(  ) )
         {
-            if ( StringUtils.contains( strKey, strKeySuffixe ) )
+            if ( strKey.endsWith( strKeySuffixe ) )
             {
                 listRemovedKeys.add( strKey );
             }
@@ -188,7 +217,7 @@ public class ActionHitService extends AbstractCacheableService implements Initia
 
         for ( String strKey : listRemovedKeys )
         {
-            removeKey( strKey );
+            remove( strKey );
         }
     }
 
@@ -202,12 +231,12 @@ public class ActionHitService extends AbstractCacheableService implements Initia
     }
 
     /**
-     * {@inheritDoc}
+     * Create the cache of the service
      */
-    @Override
-    public void afterPropertiesSet(  ) throws Exception
+    @PostConstruct
+    public void init(  )
     {
-        initCache(  );
+        initCache( SERVICE_NAME, String.class, ActionHit.class );
     }
 
     /**

@@ -42,19 +42,20 @@ import fr.paris.lutece.portal.web.resource.IExtendableResourcePluginAction;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 
 /**
  * ActionbarInstallerPluginAction
  */
+@ApplicationScoped
 public class ActionHitInstallerPluginAction extends AbstractPluginAction<IExtendableResource>
     implements IExtendableResourcePluginAction
 {
     private static final String ACTION_NAME = "Action hit";
 
-    // TEMPLATE
     private static final String TEMPLATE_BUTTON = "../plugins/extend/modules/actionhit/actions/install_actionhit.html";
 
     /**
